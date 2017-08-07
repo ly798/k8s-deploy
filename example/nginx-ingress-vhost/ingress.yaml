@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vhost-test-8088
+spec:
+  rules:
+  - host: foo1.bar.com
+    http:
+      paths:
+      - backend:
+          serviceName: nginx-test-8088
+          servicePort: 8088
+
