@@ -1,0 +1,16 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cinder-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  #storageClassName: slow
+  #selector:
+  #  matchLabels:
+  #    release: "stable"
+  #  matchExpressions:
+  #    - {key: environment, operator: In, values: [dev]}

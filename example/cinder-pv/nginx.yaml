@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+   app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: daocloud.io/library/nginx
+    volumeMounts:
+    - mountPath: "/var/www/html"
+      name: mypd
+    ports:
+    - containerPort: 80
+  volumes:
+    - name: mypd
+      persistentVolumeClaim:
+        claimName: cinder-pvc
