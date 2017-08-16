@@ -1,13 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: vhost-test-8088
+  name: vhost-test-vhost
 spec:
   rules:
-  - host: foo1.bar.com
+  - host: nginx-vhost.kycloud-k8s-1.com
     http:
       paths:
       - backend:
-          serviceName: nginx-test-8088
+          serviceName: nginx-test-vhost
           servicePort: 8088
 

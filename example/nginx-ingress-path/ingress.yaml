@@ -1,12 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: nginx-ingress
+  name: nginx-ingress-path
 spec:
   rules:
      - http:
         paths:
         - path: /nginx
           backend:
-            serviceName: nginx-test
+            serviceName: nginx-test-path
             servicePort: 80
