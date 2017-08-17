@@ -82,14 +82,17 @@ spec:
         - --domain=cluster.local.
         - --dns-port=10053
         - --config-map=kube-dns
-        - --kube-master-url=https://172.16.0.107:6443
+        - --kube-master-url=https://172.16.0.61:6443
         - --kubecfg_file=/etc/kubernetes/ssl/config
         # This should be set to v=2 only after the new image (cut from 1.5) has
         # been released, otherwise we will flood the logs.
         - --v=0
         volumeMounts:
-        - mountPath: /etc/kubernetes/ssl
-          name: ssl-certs-kubernetes
+        #- mountPath: /etc/kubernetes/ssl
+        #  name: ssl-certs-kubernetes
+        - name: ssl-certs-kubernetes-secrets
+          mountPath: /etc/kubernetes/ssl
+          readOnly: true
         #- mountPath: /etc/ssl/certs
         #  name: ssl-certs-host
         #- mountPath: /etc/kubernetes/worker-kubeconfig.yaml
@@ -182,12 +185,39 @@ spec:
       volumes:
       - name: etcd-storage
         emptyDir: {}
-      - hostPath:
-          path: /home/fedora/auth
-        name: ssl-certs-kubernetes
+      #- hostPath:
+      #    path: /home/fedora/auth
+      #  name: ssl-certs-kubernetes
       #- hostPath:
       #    path: /etc/pki/tls/certs
       #  name: ssl-certs-host
       #- hostPath:
       #    path: /etc/kubernetes/worker-kubeconfig.yaml
       #  name: config
+      - name: ssl-certs-kubernetes-secrets
+        secret:
+          secretName: client-auth-files
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-dns
+  namespace: kube-system
+  labels:
+    k8s-app: kube-dns
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "KubeDNS"
+spec:
+  selector:
+    k8s-app: kube-dns
+  clusterIP: 10.254.0.10
+  ports:
+  - name: dns
+    port: 53
+    protocol: UDP
+  - name: dns-tcp
+    port: 53
+    protocol: TCP
+

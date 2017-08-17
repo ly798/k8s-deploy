@@ -137,12 +137,19 @@ spec:
         volumeMounts:
         #- mountPath: /etc/kubernetes/worker-kubeconfig.yaml
         #  name: kubeconfig
-        - mountPath: /etc/kubernetes/ssl
-          name: ssl-certs-kubernetes
+        #- mountPath: /etc/kubernetes/ssl
+        #  name: ssl-certs-kubernetes
+        - name: ssl-certs-kubernetes-secrets
+          mountPath: /etc/kubernetes/ssl
+          readOnly: true
+
       volumes:
-      - hostPath:
-          path: /home/fedora/auth
-        name: ssl-certs-kubernetes
+      #- hostPath:
+      #    path: /home/fedora/auth
+      #  name: ssl-certs-kubernetes
       #- name: kubeconfig
       #  hostPath:
       #    path: /etc/kubernetes/worker-kubeconfig.yaml
+      - name: ssl-certs-kubernetes-secrets
+        secret:
+          secretName: client-auth-files
